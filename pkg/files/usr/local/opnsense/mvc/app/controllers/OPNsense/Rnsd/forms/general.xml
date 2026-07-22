@@ -1,0 +1,76 @@
+<form>
+    <field>
+        <id>rnsd.general.enabled</id>
+        <label>Enable Reticulum Bridge</label>
+        <type>checkbox</type>
+        <help>Enable or disable the rnsd service. When enabled, the daemon bridges the PostInterface backbone to LAN RNS nodes.</help>
+    </field>
+
+    <field>
+        <id>rnsd.general.PostInterfaceNodeUrl</id>
+        <label>PostInterface Node URL</label>
+        <type>text</type>
+        <help>Full URL of the Reticulum-PHP exchange endpoint (e.g., https://retichat.com/reticulum). This is the node this bridge polls for packets.</help>
+        <Required>Y</Required>
+    </field>
+
+    <field>
+        <id>rnsd.general.PostInterfaceWakeUrl</id>
+        <label>PostInterface Wake URL (optional)</label>
+        <type>text</type>
+        <help>Optional wake endpoint URL. If set, the bridge will idle until woken by the remote node.</help>
+    </field>
+
+    <field>
+        <id>rnsd.general.PostInterfacePollInterval</id>
+        <label>Poll Interval (seconds)</label>
+        <type>text</type>
+        <help>How often to poll the PostInterface node for new packets. Minimum: 2.0 seconds.</help>
+        <Required>Y</Required>
+    </field>
+
+    <field>
+        <id>rnsd.general.BackboneBindAddress</id>
+        <label>Backbone Bind Address</label>
+        <type>text</type>
+        <help>IP address for the BackboneInterface TCP listener. Use 0.0.0.0 to listen on all interfaces.</help>
+        <Required>Y</Required>
+    </field>
+
+    <field>
+        <id>rnsd.general.BackboneBindPort</id>
+        <label>Backbone Bind Port</label>
+        <type>text</type>
+        <help>TCP port for the BackboneInterface listener. Default: 4242.</help>
+        <Required>Y</Required>
+    </field>
+
+    <field>
+        <id>rnsd.general.LogLevel</id>
+        <label>Log Level</label>
+        <type>dropdown</type>
+        <help>Reticulum log verbosity. Higher = more output.</help>
+        <Required>Y</Required>
+    </field>
+
+    <field>
+        <id>rnsd.general.MTU</id>
+        <label>MTU</label>
+        <type>text</type>
+        <help>Maximum Transmission Unit for the bridge interface. Default: 500.</help>
+    </field>
+
+    <field>
+        <id>rnsd.general.PathfinderMaxHops</id>
+        <label>Pathfinder Max Hops</label>
+        <type>text</type>
+        <help>Maximum hop count for path discovery. Default: 128.</help>
+    </field>
+
+    <field>
+        <id>rnsd.general.EnableTransport</id>
+        <label>Enable Transport</label>
+        <type>checkbox</type>
+        <help>Enable the Reticulum Transport engine (required for path discovery and relaying).</help>
+    </field>
+</form>

@@ -1,0 +1,15 @@
+# OPNS-RNS-Post-Bridge .gitignore
+
+# Build artifacts
+pkg/files/usr/local/bin/rnsd
+pkg/+MANIFEST
+*.txz
+
+# Rust build artifacts
+target/
+
+# Editor
+*.swp
+*.swo
+*~
+.DS_Store

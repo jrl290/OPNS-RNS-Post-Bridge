@@ -1,0 +1,14 @@
+<menu>
+    <Services>
+        <Rnsd
+            cssClass="fa fa-exchange fa-fw"
+            order="90"
+            url="/ui/rnsd"
+        >
+            <General
+                order="10"
+                url="/ui/rnsd/index"
+            />
+        </Rnsd>
+    </Services>
+</menu>

@@ -1,0 +1,48 @@
+# Reticulum Configuration — OPNS-RNS-Post-Bridge
+# Example bridge config. Modify via OPNSense web UI at Services → Reticulum Bridge.
+# The running config is at /usr/local/etc/reticulum/config
+#
+# The Rust rnsd reads this TOML file. PostInterface type was ported from
+# the PHP implementation — see reticulum_rust/src/interfaces/post_interface.rs
+
+enable_transport = Yes
+
+[logging]
+loglevel = 3
+
+[interfaces]
+
+# ── PostInterface Bridge ──────────────────────────────────────────────
+# Connects to a Reticulum-PHP node (like Retichat) for HTTP/JSON exchange.
+# This is the "WAN" side of the bridge.
+# Config keys: name, node_url, wake_url (opt), poll_interval_seconds (opt),
+#              bitrate, mtu
+[[PostInterface Bridge]]
+type = PostInterface
+enabled = yes
+name = "PostInterface Bridge"
+node_url = "https://retichat.com/reticulum"
+# wake_url = "https://retichat.com/reticulum/v1/wake"
+# poll_interval_seconds = 5.0
+bitrate = 1000000000
+mtu = 500
+
+# ── Backbone Bridge ──────────────────────────────────────────────────
+# High-speed TCP server for downstream RNS nodes (RTNode, Sideband, etc.)
+# This is the "LAN" side of the bridge.
+[[Backbone Bridge]]
+type = BackboneInterface
+enabled = yes
+name = "Backbone Bridge"
+listen_ip = "0.0.0.0"
+listen_port = 4242
+bitrate = 1000000000
+
+# ── Transport ────────────────────────────────────────────────────────
+[transport]
+rns_mtu = 500
+pathfinder_max_hops = 128
+path_expiry_default_seconds = 604800
+path_expiry_access_point_seconds = 86400
+path_expiry_roaming_seconds = 21600
+max_random_blobs = 64

@@ -1,0 +1,42 @@
+#!/bin/sh
+# +POST_INSTALL — OPNS-RNS-Post-Bridge post-install script
+
+set -e
+
+PKG_PREFIX=${PKG_PREFIX:-/usr/local}
+CONFIG_DIR="${PKG_PREFIX}/etc/reticulum"
+CONFIG_FILE="${CONFIG_DIR}/config"
+
+echo "=== OPNS-RNS-Post-Bridge post-install ==="
+
+# Create config directory structure
+mkdir -p "${CONFIG_DIR}"
+mkdir -p "${PKG_PREFIX}/var/log/reticulum"
+
+# Install default config if none exists
+if [ ! -f "${CONFIG_FILE}" ]; then
+    echo "Installing default Reticulum config..."
+    cp "${PKG_PREFIX}/share/reticulum/reticulum.conf.example" "${CONFIG_FILE}"
+    chmod 644 "${CONFIG_FILE}"
+fi
+
+# Set ownership (OPNSense uses root:wheel)
+chown -R root:wheel "${CONFIG_DIR}"
+
+# Enable rnsd service (but don't start — user must configure first)
+echo "Enabling rnsd service..."
+sysrc rnsd_enable="YES" 2>/dev/null || true
+
+# Register with OPNSense config system
+if [ -x "${PKG_PREFIX}/opnsense/scripts/OPNsense/Rnsd/reconfigure.php" ]; then
+    php "${PKG_PREFIX}/opnsense/scripts/OPNsense/Rnsd/reconfigure.php"
+fi
+
+echo "=== OPNS-RNS-Post-Bridge installed ==="
+echo ""
+echo "Configure the bridge at: Services → Reticulum Bridge"
+echo "Config file: ${CONFIG_FILE}"
+echo "Log file:    ${PKG_PREFIX}/var/log/reticulum/rnsd.log"
+echo ""
+echo "Start manually:  service rnsd start"
+echo "Status:          service rnsd status"

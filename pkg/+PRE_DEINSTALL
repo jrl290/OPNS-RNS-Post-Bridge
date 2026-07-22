@@ -1,0 +1,19 @@
+#!/bin/sh
+# +PRE_DEINSTALL — OPNS-RNS-Post-Bridge pre-deinstall script
+
+set -e
+
+PKG_PREFIX=${PKG_PREFIX:-/usr/local}
+
+echo "=== OPNS-RNS-Post-Bridge pre-deinstall ==="
+
+# Stop the service if running
+if service rnsd status >/dev/null 2>&1; then
+    echo "Stopping rnsd service..."
+    service rnsd stop || true
+fi
+
+# Disable the service
+sysrc rnsd_enable="NO" 2>/dev/null || true
+
+echo "=== rnsd service stopped and disabled ==="

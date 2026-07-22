@@ -1,0 +1,52 @@
+#!/bin/sh
+#
+# rc.d/rnsd — FreeBSD rc.d script for rnsd (Reticulum Network Stack Daemon)
+#
+# Provides: rnsd
+# REQUIRE:  LOGIN NETWORKING
+# KEYWORD:  shutdown
+#
+# Install: /usr/local/etc/rc.d/rnsd
+# Enable:  sysrc rnsd_enable="YES"
+#
+
+. /etc/rc.subr
+
+name="rnsd"
+rcvar="${name}_enable"
+
+: ${rnsd_enable:="NO"}
+: ${rnsd_config:="/usr/local/etc/reticulum"}
+: ${rnsd_loglevel:="3"}
+: ${rnsd_user:="root"}
+: ${rnsd_group:="wheel"}
+
+command="/usr/local/bin/${name}"
+command_args="--config ${rnsd_config} -s"
+pidfile="/var/run/${name}.pid"
+logfile="/usr/local/var/log/reticulum/${name}.log"
+
+start_precmd="rnsd_prestart"
+
+rnsd_prestart()
+{
+    # Ensure log directory exists
+    mkdir -p "$(dirname "${logfile}")"
+
+    # If running as non-root, fix ownership
+    if [ "${rnsd_user}" != "root" ]; then
+        chown "${rnsd_user}:${rnsd_group}" "$(dirname "${logfile}")"
+    fi
+
+    # Verify config exists
+    if [ ! -f "${rnsd_config}/config" ]; then
+        echo "ERROR: Reticulum config not found at ${rnsd_config}/config"
+        echo "Configure via: Services → Reticulum Bridge in the web UI"
+        return 1
+    fi
+
+    return 0
+}
+
+load_rc_config "${name}"
+run_rc_command "$1"

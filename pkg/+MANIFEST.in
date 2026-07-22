@@ -1,0 +1,23 @@
+name: opns-rns-post-bridge
+version: __VERSION__
+origin: net/opns-rns-post-bridge
+comment: Reticulum Network Stack Daemon bridge for OPNSense
+maintainer: reticulum@retichat.com
+www: https://reticulum.network
+prefix: /usr/local
+desc: |
+  rnsd (Rust implementation) packaged as an OPNSense plugin.
+  
+  This daemon bridges the Reticulum-PHP PostInterface backbone
+  to a local Reticulum mesh via a high-speed BackboneInterface.
+  
+  Features:
+  - PostInterface HTTP exchange client (polls PHP nodes)
+  - BackboneInterface TCP server (serves LAN RNS nodes)
+  - Web UI configuration integrated into OPNSense
+  - Managed via rc.d service
+
+deps:
+  libc
+  libcrypto
+  libssl;

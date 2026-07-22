@@ -1,0 +1,11 @@
+# cross.toml — cross-rs configuration for FreeBSD target
+# See: https://github.com/cross-rs/cross/wiki/Configuration
+
+[target.x86_64-unknown-freebsd]
+# Use our custom Docker image with extra build deps
+image = "opns-rns-cross:latest"
+
+# Pre-build: ensure the image is built
+pre-build = [
+    "docker build -t opns-rns-cross cross/"
+]
