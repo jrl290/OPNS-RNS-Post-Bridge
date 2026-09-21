@@ -5,6 +5,10 @@
 # The Rust rnsd reads this TOML file. PostInterface type was ported from
 # the PHP implementation — see reticulum_rust/src/interfaces/post_interface.rs
 
+# `enable_transport` MUST sit under [reticulum]. Above any [section] it is
+# ignored, and the node runs with transport disabled whatever this file says —
+# which is exactly how the production gateway ran until 2026-09-21.
+[reticulum]
 enable_transport = Yes
 
 [logging]
@@ -21,6 +25,10 @@ loglevel = 3
 type = PostInterface
 enabled = yes
 name = "PostInterface Bridge"
+# `mode` (not `interface_mode`) is the key PostInterface reads. It sets the RNS
+# interface mode here AND is sent to the PHP node, where gateway means "relay:
+# announces on this interface are remote peers" and enables split-horizon.
+mode = gateway
 node_url = "https://retichat.com/reticulum"
 # wake_url = "https://retichat.com/reticulum/v1/wake"
 # poll_interval_seconds = 5.0
