@@ -8,6 +8,20 @@ The gateway is the **only** node relaying PostInterface (retichat.com) ↔ RMAP 
 MichMesh. While it is down, the entire browser↔backbone chain is severed, so
 work through this in order and do not leave it half-installed.
 
+> **Scripted since 2026-09-22:** `rnsd-redeploy.sh` in this repo does §3–§5
+> in one go and refuses the mistakes below. On the gateway:
+>
+> ```sh
+> fetch -o /root/rnsd-redeploy.sh https://raw.githubusercontent.com/jrl290/OPNS-RNS-Post-Bridge/main/rnsd-redeploy.sh
+> sh /root/rnsd-redeploy.sh              # origin/main
+> sh /root/rnsd-redeploy.sh <rev>        # a specific commit
+> sh /root/rnsd-redeploy.sh --status     # what is installed and running
+> sh /root/rnsd-redeploy.sh --rollback   # previous binary back
+> ```
+>
+> It records the installed commit in `/usr/local/etc/reticulum/rnsd.rev`.
+> The prose below is the reasoning behind each step.
+
 ---
 
 ## 0. Facts you need
