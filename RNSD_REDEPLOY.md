@@ -168,8 +168,12 @@ test-harnesses/distro-pipeline/node.sh sql-retichat \
     GROUP BY minute ORDER BY minute;"
 ```
 
-A healthy bridge shows ~250–320 packets/minute. **Zero after the restart means
-the install is broken — roll back.**
+A healthy bridge shows ~130–320 packets/minute depending on the hour. **Zero
+after the restart means the install is broken — roll back.** Note that the
+PostInterface registers under a **new interface id on every gateway restart**
+(51f3b1e7 became aa81d2a0 on 2026-09-22); read the current id from
+`https://retichat.com/reticulum/health` (`php_interface_registry.recent_online`)
+before running the query, or the count is zero for the wrong reason.
 
 Finally, re-run the end-to-end check:
 

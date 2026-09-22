@@ -133,7 +133,10 @@ verify_binary target/release/rnsd
 install_binary target/release/rnsd "$rev"
 
 cat <<EOF
-== next: prove packets cross the bridge (RNSD_REDEPLOY.md §5) — from the Mac:
-   test-harnesses/distro-pipeline/node.sh sql-retichat "SELECT FROM_UNIXTIME(created_at - (created_at % 60)) minute, COUNT(*) n FROM inbound_packets WHERE interface_id LIKE '51f3b1e7%' AND created_at > UNIX_TIMESTAMP(NOW() - INTERVAL 15 MINUTE) GROUP BY minute ORDER BY minute;"
+== next: prove packets cross the bridge (RNSD_REDEPLOY.md §5). The PostInterface
+   registers under a NEW interface id on every restart, so read the current one
+   from the node first, then count its packets per minute — from the Mac:
+   curl -s https://retichat.com/reticulum/health | python3 -c 'import sys,json; [print(i["interface_id"], i["name"]) for i in json.load(sys.stdin)["php_interface_registry"]["recent_online"]]'
+   test-harnesses/distro-pipeline/node.sh sql-retichat "SELECT FROM_UNIXTIME(created_at - (created_at % 60)) minute, COUNT(*) n FROM inbound_packets WHERE interface_id='<id from health>' AND created_at > UNIX_TIMESTAMP(NOW() - INTERVAL 15 MINUTE) GROUP BY minute ORDER BY minute;"
    Zero after the restart means roll back: sh $0 --rollback
 EOF
